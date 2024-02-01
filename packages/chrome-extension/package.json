@@ -1,0 +1,27 @@
+{
+  "name": "__PACKAGE_NAME__",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "bun index.ts",
+    "start": "bun index.ts --watch"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "11.0.3",
+    "@types/node": "20.8.7",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "bun-types": "1.0.25",
+    "chokidar": "3.5.3",
+    "chrome-types": "0.1.233",
+    "fs-extra": "11.1.1",
+    "log-update": "5.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
