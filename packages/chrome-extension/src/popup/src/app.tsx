@@ -1,1 +1,1 @@
-export const App = () => (<div>popup</div>)
+export const App = () => (<div style={{ color: 'red' }}>popup</div>)

@@ -1,13 +1,26 @@
 import fs from 'fs-extra';
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import { WebSocketServer, WebSocket } from 'ws';
 import react from '@vitejs/plugin-react'
 
 const outDir = resolve(__dirname, './extension');
 const isWatchMode = process.argv.includes('--watch');
 
+let clients:WebSocket[] = [];
+
 if (isWatchMode) {
-  // 
+  console.log(1230)
+  const wss = new WebSocketServer({ port: 8080, path: '/wss' });
+  wss.on('connection', function connection(ws) {
+    clients.push(ws);
+    ws.on('message', function incoming(message) {
+      console.log('received: %s', message);
+    });
+    ws.on('close', function close() {
+      clients = clients.filter(client => client !== ws);
+    });
+  });
 }
 
 // 清空目录
@@ -21,7 +34,18 @@ fs.copyFileSync('src/manifest.json', 'extension/manifest.json');
 export default defineConfig({
   base: '',
   root: './src',
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'after-bundle',
+      closeBundle() {
+        clients.forEach(client => client.send('reload'));
+      },
+    }
+  ],
+  define: {
+    __LIVE_RELOAD__: JSON.stringify(isWatchMode),
+  },
   build: {
     outDir: resolve(__dirname, './extension'),
     rollupOptions: {
