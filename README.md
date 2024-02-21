@@ -20,5 +20,4 @@ wget -O - https://raw.githubusercontent.com/qoxop/templates/main/create.sh | bas
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/qoxop/templates/main/create.sh | bash -s -- -p=chrome-extension -n=my-chrome-extension
-# wget -O - https://raw.githubusercontent.com/qoxop/templates/main/create.sh | bash -s -- -p=chrome-extension -n=my-chrome-extension
 ```
