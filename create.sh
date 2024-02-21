@@ -57,4 +57,10 @@ fi
 # 删除临时目录
 rm -rf "$TEMP_DIR"
 
+# 遍历项目目录中的所有 JSON 文件
+find "./$NAME" -type f -name "*.json" -print0 | while IFS= read -r -d $'\0' file; do
+    # 使用 sed 命令替换文件中的 __PACKAGE_NAME__ 字符串为指定的项目名称
+    sed -i '' "s/__PACKAGE_NAME__/$NAME/g" "$file"
+done
+
 echo "Done. '$PROJECT' has been copied to './$NAME'."

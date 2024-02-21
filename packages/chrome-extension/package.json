@@ -1,5 +1,5 @@
 {
-  "name": "chrome-extension",
+  "name": "__PACKAGE_NAME__",
   "private": true,
   "version": "0.0.0",
   "type": "module",
