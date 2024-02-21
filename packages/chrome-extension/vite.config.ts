@@ -24,7 +24,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: resolve(__dirname, './extension'),
-
     rollupOptions: {
       input: {
         options: resolve(__dirname, 'src/options.html'),
@@ -34,7 +33,7 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (info) => {
-          return /\.html$/.test(info.facadeModuleId) ? `scripts/${info.name}-[hash].js` : `${info.name}.js`;
+          return /\.html$/.test(info.facadeModuleId || '') ? `scripts/${info.name}-[hash].js` : `${info.name}.js`;
         },
       }
     },
