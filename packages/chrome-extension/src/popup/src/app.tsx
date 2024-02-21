@@ -1,1 +1,5 @@
-export const App = () => (<div style={{ color: 'red' }}>popup</div>)
+import { Button } from "@/components/ui/button"
+
+export const App = () => (<div className="p-10">
+    <Button>Click me</Button>
+</div>)
