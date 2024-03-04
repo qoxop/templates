@@ -213,7 +213,16 @@ export const accounts = [
 ]
 
 export type Account = (typeof accounts)[number]
-
+export type Mail = {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  text: string;
+  date: string;
+  read: boolean;
+  labels: string[];
+};
 export const contacts = [
   {
     name: "Emma Johnson",

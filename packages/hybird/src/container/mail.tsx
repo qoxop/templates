@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+import Cookies from "js-cookie"
 
 interface MailProps {
   accounts: {
@@ -43,15 +44,32 @@ interface MailProps {
   defaultCollapsed?: boolean
   navCollapsedSize: number
 }
-
+const getInitLayout = ():number[] => {
+  try {
+    const layouts = JSON.parse(Cookies.get()['react-resizable-panels:layout']);
+    if (layouts.length === 3 && layouts.every((item: any) => typeof item === 'number')) {
+      return layouts as unknown as number[];
+    }
+    return [265, 440, 655]
+  } catch (error) {
+    return [265, 440, 655]
+  }
+}
+const getInitCollapsed = () => {
+  try {
+    const collapsed = JSON.parse(Cookies.get()['react-resizable-panels:collapsed']);
+    return collapsed
+  } catch (error) {
+    return false
+  }
+}
 export default function _Mail({
   accounts,
   mails,
-  defaultLayout = [265, 440, 655],
-  defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed)
+  const [ layouts ] = React.useState(getInitLayout)
+  const [isCollapsed, setIsCollapsed] = React.useState(getInitCollapsed)
   const [mail] = useMail()
 
   return (
@@ -59,23 +77,23 @@ export default function _Mail({
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-            sizes
-          )}`
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`
         }}
-        className="h-full max-h-[800px] items-stretch"
+        className="h-full items-stretch"
       >
         <ResizablePanel
-          defaultSize={defaultLayout[0]}
+          defaultSize={layouts[0]}
           collapsedSize={navCollapsedSize}
           collapsible={true}
-          minSize={15}
+          minSize={14}
           maxSize={20}
-          onCollapse={(collapsed) => {
-            setIsCollapsed(collapsed)
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              collapsed
-            )}`
+          onExpand={() => {
+            setIsCollapsed(false);
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
+          }}
+          onCollapse={() => {
+            setIsCollapsed(true);
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
           }}
           className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
         >
@@ -162,8 +180,8 @@ export default function _Mail({
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <Tabs defaultValue="all">
+        <ResizablePanel defaultSize={layouts[1]} minSize={22}>
+          <Tabs defaultValue="all" className="h-full flex flex-col">
             <div className="flex items-center px-4 py-2">
               <h1 className="text-xl font-bold">Inbox</h1>
               <TabsList className="ml-auto">
@@ -180,16 +198,16 @@ export default function _Mail({
                 </div>
               </form>
             </div>
-            <TabsContent value="all" className="m-0">
+            <TabsContent value="all" className="m-0 flex-1">
               <MailList items={mails} />
             </TabsContent>
-            <TabsContent value="unread" className="m-0">
+            <TabsContent value="unread" className="m-0 flex-1">
               <MailList items={mails.filter((item) => !item.read)} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]}>
+        <ResizablePanel defaultSize={layouts[2]}>
           <MailDisplay
             mail={mails.find((item) => item.id === mail.selected) || null}
           />

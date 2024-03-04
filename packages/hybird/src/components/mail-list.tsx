@@ -8,14 +8,14 @@ import { Mail } from "./data"
 import { useMail } from "./use-mail"
 
 interface MailListProps {
-  items: Mail[]
+  items: Mail[],
+  top?: number;
 }
 
-export function MailList({ items }: MailListProps) {
+export function MailList({ items, top = 126 }: MailListProps) {
   const [mail, setMail] = useMail()
-
   return (
-    <ScrollArea className="h-screen">
+    <ScrollArea style={{ height: `calc(100vh - ${top}px)` }}>
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
           <button
