@@ -23,9 +23,13 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "providers/*": [
+        "./providers/*"
       ]
-    }
+    },
+    "types": ["react/canary"]
   },
-  "include": ["src"],
+  "include": ["src", "providers"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
