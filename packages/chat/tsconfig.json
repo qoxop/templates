@@ -26,10 +26,13 @@
       ],
       "providers/*": [
         "./providers/*"
+      ],
+      "i18n/*": [
+        "./i18n/*"
       ]
     },
     "types": ["react/canary"]
   },
-  "include": ["src", "providers"],
+  "include": ["src", "providers", "i18n"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
